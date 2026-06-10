@@ -1,20 +1,35 @@
 class Solution {
-    public boolean isAnagram(String s, String t) {
-        if(s.length()!=t.length()){
-            return false;
+    public List<Integer> findAnagrams(String s, String p) {
+        
+        List<Integer> result = new ArrayList<>();
+
+        if (s.length() < p.length()) {
+            return result;
         }
-        HashMap<Character,Integer> map=new HashMap<>();
-        for(char ch:s.toCharArray()){
-            map.put(ch,map.getOrDefault(ch,0)+1);
+
+        int[] pCount = new int[26];
+        int[] sCount = new int[26];
+
+        for (char ch : p.toCharArray()) {
+            pCount[ch - 'a']++;
         }
-        for(char c:t.toCharArray()){
-            map.put(c,map.getOrDefault(c,0)-1);
-        }
-        for(int f: map.values()){
-            if(f!=0){
-                return false;
+
+        int windowSize = p.length();
+
+        for (int i = 0; i < s.length(); i++) {
+            sCount[s.charAt(i) - 'a']++;
+
+            if (i >= windowSize) {
+                sCount[s.charAt(i - windowSize) - 'a']--;
+            }
+
+            if (Arrays.equals(pCount, sCount)) {
+                result.add(i - windowSize + 1);
             }
         }
-        return true;
+
+        return result;
     }
 }
+        
+    
